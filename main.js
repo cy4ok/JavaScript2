@@ -5,7 +5,7 @@ const goods = [
     { title: "Умные часы apple watch", price: 26000, img: 'https://via.placeholder.com/150' },
 ];
 
-const renderGoodsItem = (title, price, img = '') => {
+const renderGoodsItem = (title = '', price = '', img = '') => {
     return `<div class="goods-item">
         <img src="${img}" alt="alt">
         <h3>${title}</h3>
@@ -13,9 +13,9 @@ const renderGoodsItem = (title, price, img = '') => {
     </div>`
 };
 
-const renderGoodsList = (list, container) => {
+const renderGoodsList = (list = [], container = '') => {
     const goodsList = list.map(good => renderGoodsItem(good.title, good.price, good.img));
-    document.querySelector(container).innerHTML = goodsList;
+    document.querySelector(container).innerHTML = goodsList.join('');
 };
 
 renderGoodsList(goods, '.goods-list');
