@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<form>
+    <select id="sizeId" name="size" onchange="burger.getSize">
+        <option value="Big" selected="selected">Большой</option>
+        <option value="Small">Маленький</option>
+    </select>
+    <select id="AdditiveId" name="Additive" onchange="burger.getAdditive">
+        <option value="cheese">С сыром</option>
+        <option value="salad">С салатом</option>
+        <option value="potatoes">С картошкой</option>
+    </select>
+    <div>
+        <input type="checkbox" id="seasoningId" value="seasoning">
+        <label for="seasoningId">Добавить приправу</label>
+    </div>
+    <div>
+        <input type="checkbox" id="mayonnaiseId" value="seasoning">
+        <label for="mayonnaiseId">Добавить майонез</label>
+    </div>
+</form>
+    <script>
+    class burger {
+        constructor(price = 0, calor = 0) {
+            this.price = price;
+            this.calor = calor;
+        }
+        getSize() {
+            let size = document.getElementById("sizeId").options.selectedIndex;
+            if (size === 0) {
+               this.price += 100;
+               this.calor += 40;
+            }
+            else {
+                this.price += 50;
+                this.calor += 20;
+            }
+        }
+        run() {
+            document.getElementById("sizeId").addEventListener("change", getSize);
+            document.getElementById("AdditiveId").addEventListener("change", getAdditive);
+            const seasoning = document.getElementById('seasoningId');
+            const mayonnaise = document.getElementById('mayonnaiseId');
+            console.log(this.price, this.calor);
+        }
+        getAdditive() {
+            let additive = document.getElementById("AdditiveId").options.selectedIndex;
+            switch (additive) {
+                case 0:
+                    this.price += 10;
+                    this.calor += 20;
+                    break;
+                case 1:
+                    this.price += 20;
+                    this.calor += 5;
+                    break;
+                case 2:
+                    this.price += 15;
+                    this.calor += 10;
+                    break;
+            }
+        }
+        getChecked () {
+            seasoning.addEventListener('change', (event) => {
+                if (event.target.checked) {
+                    this.price += 15;
+                    this.calor += 0;
+                } else {
+                    this.price += 0;
+                    this.calor += 0;
+                }
+            });
+            mayonnaise.addEventListener('change', (event) => {
+                if (event.target.checked) {
+                    this.price += 20;
+                    this.calor += 5;
+                } else {
+                    this.price += 0;
+                    this.calor += 0;
+                }
+            });
+        }
+    }
+    </script>
+</body>
+</html>
