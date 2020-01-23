@@ -56,6 +56,11 @@ class GoodsList {
         this.container.innerHTML = listHtml;
         this.initListeners();
     }
+    sumItems() {
+        let summa = 0;
+        this.goods.forEach(good => {summa += good.price});
+        return summa;
+    }
 }
 class GoodsCart extends GoodsList {
     constructor() {
