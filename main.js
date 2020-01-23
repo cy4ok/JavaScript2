@@ -57,6 +57,14 @@ class GoodsList {
         this.initListeners();
     }
 }
+class GoodsCart extends GoodsList {
+    constructor() {
+        super();
+    }
+    cartClearn() {} // Очистка корзины
+    addCart() {} //Добавление в корзину товара
+    removeCart() {} //Удаление товара из корзины
+}
 
 const list = new GoodsList('.goods-list');
 list.fetchGoods();
