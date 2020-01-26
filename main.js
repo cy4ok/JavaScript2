@@ -1,22 +1,27 @@
 const API_URL = "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses";
-function makeGetRequest(url, callback) {
-    let xhr;
-    if (window.XMLHttpRequest) {
-        xhr = new window.XMLHttpRequest();
-    } else  {
-        xhr = new window.ActiveXObject("Microsoft.XMLHTTP")
-    }
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-            callback(xhr.responseText)
-
+function makeGETRequest(url) {
+    return new Promise((resolve, reject) => {
+        let xhr;
+        if (window.XMLHttpRequest) {
+            xhr = new window.XMLHttpRequest();
+        } else {
+            xhr = new window.ActiveXObject('Microsoft.XMLHTTP');
         }
-    };
 
-    xhr.open('GET', url);
-    xhr.send();
-}
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const body = JSON.parse(xhr.responseText);
+                resolve(body);
+            }
+        };
+        xhr.onerror = function(err) {
+            reject(err);
+        }
+
+        xhr.open('GET', url);
+        xhr.send();
+    });
+};
 
 class GoodsItem {
     constructor(id, title = 'Без названия', price = 0, img = 'https://via.placeholder.com/150') {
@@ -82,11 +87,10 @@ class GoodsPage extends GoodsList {
             })
         })
     }
-    fetchGoods(callback) {
-        makeGetRequest(`${API_URL}/catalogData.json`, (goods) => {
-            this.goods = JSON.parse(goods);
-            callback();
-        })
+    fetchGoods() {
+        return makeGETRequest(`${API_URL}/catalogData.json`).then((goods) => {
+            this.goods = goods;
+        });
     }
     addToCart(goodId) {
         const good = this.findGood(goodId);
@@ -120,7 +124,7 @@ class CartItem extends GoodsItem {
 }
 
 const list = new GoodsPage('.goods-list');
-list.fetchGoods(() => {
+list.fetchGoods().then(() => {
     list.render();
 });
 
