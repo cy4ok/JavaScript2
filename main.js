@@ -79,7 +79,7 @@ class GoodsList {
 
 class GoodsPage extends GoodsList {
     initListeners() {
-        const buttons = [...this.container.querySelectorAll('.js-add-to-cart')];
+        const buttons = [...this.container.querySelectorAll('.buy-item')];
         buttons.forEach(button => {
             button.addEventListener('click', (event) => {
                 const goodId = event.target.parentElement.getAttribute('data-id');
