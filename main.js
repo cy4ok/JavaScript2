@@ -1,21 +1,127 @@
-const goods = [
-    { title: "Робот-пылесос xiaomi", price: 20000, img: 'https://via.placeholder.com/150' },
-    { title: "Samsung Galaxy", price: 21500, img: 'https://via.placeholder.com/150' },
-    { title: "Стиральная машина hotpoint", price: 32000, img: 'https://via.placeholder.com/150' },
-    { title: "Умные часы apple watch", price: 26000, img: 'https://via.placeholder.com/150' },
-];
+const API_URL = "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses";
+function makeGetRequest(url, callback) {
+    let xhr;
+    if (window.XMLHttpRequest) {
+        xhr = new window.XMLHttpRequest();
+    } else  {
+        xhr = new window.ActiveXObject("Microsoft.XMLHTTP")
+    }
 
-const renderGoodsItem = (title = '', price = '', img = '') =>
-    `<div class="goods-item">
-        <img src="${img}" alt="alt">
-        <h3 class="title-goods-item">${title}</h3>
-        <p>${price}</p>
-        <button class="buy-item">Купить</button>
-    </div>`;
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            callback(xhr.responseText)
 
-const renderGoodsList = (list = [], container = '') => {
-    const goodsList = list.map(good => renderGoodsItem(good.title, good.price, good.img));
-    document.querySelector(container).innerHTML = goodsList.join('');
-};
+        }
+    };
 
-renderGoodsList(goods, '.goods-list');
+    xhr.open('GET', url);
+    xhr.send();
+}
+
+class GoodsItem {
+    constructor(id, title = 'Без названия', price = 0, img = 'https://via.placeholder.com/150') {
+        this.id = id;
+        this.title = title;
+        this.price = price;
+        this.img = img;
+    }
+    render() {
+        return `
+            <div class="goods-item" data-id="${this.id}">
+                <img src="${this.img}" alt="alt">
+                <h3 class="title-goods-item">${this.title}</h3>
+                <p>${this.price}</p>
+                <button class="buy-item">Добавить</button>
+            </div>
+        `;
+    }
+}
+
+class GoodsList {
+    constructor(container) {
+        this.container = document.querySelector(container);
+        this.goods = [];
+    }
+    initListeners() {}
+    findGood(id) {
+        return this.goods.find(good => good.id === id);
+    }
+    fetchGoods() {}
+    totalSum() {
+        let sum = 0;
+        for (const good of this.goods) {
+            if (good.price) {
+                sum += good.price;
+            }
+        }
+        return sum;
+        // return this.goods.reduce((totalPrice, good) => {
+        //     if (!good.price) return totalPrice;
+        //     totalPrice += good.price;
+        //     return totalPrice;
+        // }, 0)
+    }
+    render() {
+        let listHtml = '';
+        this.goods.forEach(good => {
+            const goodItem = new GoodsItem(good.id, good.product_name, good.price, good.img);
+            listHtml += goodItem.render();
+        });
+        this.container.innerHTML = listHtml;
+        this.initListeners();
+    }
+}
+
+class GoodsPage extends GoodsList {
+    initListeners() {
+        const buttons = [...this.container.querySelectorAll('.js-add-to-cart')];
+        buttons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                const goodId = event.target.parentElement.getAttribute('data-id');
+                this.addToCart(parseInt(goodId, 10));
+            })
+        })
+    }
+    fetchGoods(callback) {
+        makeGetRequest(`${API_URL}/catalogData.json`, (goods) => {
+            this.goods = JSON.parse(goods);
+            callback();
+        })
+    }
+    addToCart(goodId) {
+        const good = this.findGood(goodId);
+        console.log(good);
+    }
+}
+
+class Cart extends GoodsList {
+    removeFromCart(goodId) {
+
+    }
+    cleanCart() {
+
+    }
+    updateCartItem(goodId, goods) {
+
+    }
+}
+
+class CartItem extends GoodsItem {
+    constructor(...attrs) {
+        super(attrs);
+        this.count = 0;
+    }
+    incCount() {
+
+    }
+    decCount() {
+
+    }
+}
+
+const list = new GoodsPage('.goods-list');
+list.fetchGoods(() => {
+    list.render();
+});
+
+console.log(list.totalSum());
