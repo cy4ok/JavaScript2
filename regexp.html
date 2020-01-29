@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let textUser = prompt('Введите текст.');
+        const regexp = /\B'|'\B/g;
+        textUser = textUser.replace(regexp, '"');
+        alert(textUser);   
+    </script>
+</body>
+</html>
