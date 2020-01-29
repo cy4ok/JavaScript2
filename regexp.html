@@ -6,8 +6,10 @@
 </head>
 <body>
     <script>
-    
-    
+        let textUser = prompt('Введите текст.');
+        const regexp = /\B'|'\B/g;
+        textUser = textUser.replace(regexp, '"');
+        alert(textUser);   
     </script>
 </body>
 </html>
