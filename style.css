@@ -1,0 +1,36 @@
+body {
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 30px 10px 10px;
+    border: 1px solid rgb(208, 209, 211);
+}
+.cart-button {
+    width: 100px;
+    height: 20px;
+    border-radius: 3px;
+    background-color: #00fffe;
+}
+.goods-list {
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+.goods-item {
+    text-align: center;
+    padding: 20px;
+    margin-left: 20px;
+    width: calc(100% / 5 - 100px);
+    background-color: #ffffff;
+}
+.title-goods-item {
+    width: 150px;
+    height: 60px;
+}
+.buy-item {
+    background-color: gray;
+    color: white;
+}
