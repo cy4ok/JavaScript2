@@ -40,6 +40,10 @@ const app = new Vue({
         cartVisibility() {
             this.isVisibleCart = !this.isVisibleCart;
         },
+        filterGoods() {
+            const regexp = new RegExp(this.searchLine, 'i');
+            this.filteredGoods = this.goods.filter((good) => regexp.test(good.product_name));
+        },
         async fetchGoods() {
             try {
                 this.goods = await this.makeGetRequest(`${API_URL}/catalogData.json`)
@@ -47,7 +51,9 @@ const app = new Vue({
             } catch (e) {
                 console.error(e);
             }
-        }
+        },
+
+
     },
     mounted() {
         this.fetchGoods();

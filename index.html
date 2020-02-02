@@ -12,8 +12,8 @@
 <body>
 <div id="app">
     <header>
-        <form class="goods-search">
-            <input type="text" class="goods-search-value">
+        <form class="goods-search" @submit.prevent="filterGoods">
+            <input type="text" class="goods-search-value" v-model.trim="searchLine">
             <button class="goods-search-button">Искать</button>
         </form>
         <div class="cart">
