@@ -6,6 +6,7 @@ const app = new Vue({
         goods: [],
         filteredGoods: [],
         searchLine: '',
+        isVisibleCart: false,
     },
     methods: {
         makeGetRequest(url) {
@@ -35,6 +36,9 @@ const app = new Vue({
                 xhr.open('GET', url);
                 xhr.send(); // readyState 2
             });
+        },
+        cartVisibility() {
+            this.isVisibleCart = !this.isVisibleCart;
         },
         async fetchGoods() {
             try {

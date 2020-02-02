@@ -17,8 +17,8 @@
             <button class="goods-search-button">Искать</button>
         </form>
         <div class="cart">
-            <button class="cart-button">Корзина</button>
-            <div class="cart-container">
+            <button class="cart-button" @click="cartVisibility">Корзина</button>
+            <div class="cart-container" v-if="isVisibleCart">
                 <ul class="cart-goods"></ul>
             </div>
         </div>
