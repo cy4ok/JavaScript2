@@ -13,12 +13,8 @@
 <div id="app">
     <header>
         <search :search-line.sync="searchLine"></search>
-        <div class="cart">
-            <button class="cart-button" @click="cartVisibility">Корзина</button>
-            <div class="cart-container" v-if="isVisibleCart">
-                <ul class="cart-goods"></ul>
-            </div>
-        </div>
+        <button class="cart-button" @click="toCartVisibility">Корзина</button>
+        <cart ref="cart"></cart>
     </header>
     <main>
         <goods-list :goods="filteredGoods" />

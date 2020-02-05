@@ -1,5 +1,7 @@
 const API_URL = "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses";
 
+const cart = [];
+
 function debounce(callback, wait, immediate) {
     let timeout;
     return function () {
@@ -38,6 +40,23 @@ Vue.component('search', {
   }
 });
 
+Vue.component('cart', {
+  data: () => ({
+    cart,
+    isVisibleCart: false,
+  }),
+  methods: {
+    cartVisibility() {
+      this.isVisibleCart = !this.isVisibleCart;
+    }
+  },
+  template: `
+        <div class="cart-container" v-if="isVisibleCart">
+             <ul class="cart-goods"></ul>
+        </div>
+  `
+});
+
 Vue.component('goods-item', {
     props: ['good'],
     template: `
@@ -45,7 +64,7 @@ Vue.component('goods-item', {
            <img src="https://via.placeholder.com/150" alt="alt">
            <h3>{{ good.product_name }}</h3>
            <p>{{ good.price }}</p>
-           <button>Добавить</button>
+           <button class="buy-item">Добавить</button>
         </div>
     `
 });
@@ -115,8 +134,8 @@ const app = new Vue({
                 xhr.send(); // readyState 2
             });
         },
-        cartVisibility() {
-            this.isVisibleCart = !this.isVisibleCart;
+        toCartVisibility() {
+            this.$refs.cart.cartVisibility();
         },
         async fetchGoods() {
             try {
