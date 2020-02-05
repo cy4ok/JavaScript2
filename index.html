@@ -12,9 +12,8 @@
 <body>
 <div id="app">
     <header>
-        <form class="goods-search" @submit.prevent="filterGoods">
-            <input type="text" class="goods-search-value" v-model.trim="searchLine">
-            <button class="goods-search-button">Искать</button>
+        <form class="goods-search">
+            <input type="text" class="goods-search-value" @input="filteredGoodsHandler">
         </form>
         <div class="cart">
             <button class="cart-button" @click="cartVisibility">Корзина</button>
@@ -24,14 +23,7 @@
         </div>
     </header>
     <main>
-        <div class="goods-list">
-            <div class="goods-item" v-for="good in filteredGoods" :key="good.id_product">
-                <img src="https://via.placeholder.com/150" alt="alt">
-                <h3 class="title-goods-item">{{ good.product_name }}</h3>
-                <p>{{ good.price }}</p>
-                <button class="buy-item">Добавить</button>
-            </div>
-        </div>
+        <goods-list :goods="filteredGoods" />
     </main>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>

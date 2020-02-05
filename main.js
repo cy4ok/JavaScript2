@@ -1,12 +1,70 @@
 const API_URL = "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses";
 
+function debounce(callback, wait, immediate) {
+    let timeout;
+    return function () {
+        const context = this;
+        const args = arguments;
+        const later = function () {
+            timeout = null;
+            if (!immediate) callback.apply(context, args);
+        };
+        const callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) {
+            callback.apply(context, args)
+        }
+    }
+}
+
+Vue.component('goods-item', {
+    props: ['good'],
+    template: `
+        <div class="goods-item" >
+           <img src="https://via.placeholder.com/150" alt="alt">
+           <h3>{{ good.product_name }}</h3>
+           <p>{{ good.price }}</p>
+           <button>Добавить</button>
+        </div>
+    `
+});
+
+Vue.component('goods-list', {
+    props: ['goods'],
+    computed: {
+        isFilteredGoodsEmpty() {
+            return this.goods.length === 0;
+        },
+    },
+    template: `
+        <div class="goods-list" v-if="!isFilteredGoodsEmpty">
+            <goods-item v-for="good in goods"
+                        :key="good.id_product" :good="good"></goods-item>
+        </div>
+        <div class="goods-not-found" v-else>
+            <h3>Нет данных</h3>
+        </div>
+    `
+});
+
+
 const app = new Vue({
     el: '#app',
     data: {
         goods: [],
         filteredGoods: [],
-        searchLine: '',
         isVisibleCart: false,
+    },
+    computed: {
+        filteredGoodsHandler() {
+            return debounce((event) => {
+                const regexp = new RegExp(event.target.value.trim(), 'i');
+                this.filteredGoods = this.goods.filter((good) => {
+                    return regexp.test(good.product_name);
+                });
+            }, 300)
+        }
     },
     methods: {
         makeGetRequest(url) {
@@ -39,10 +97,6 @@ const app = new Vue({
         },
         cartVisibility() {
             this.isVisibleCart = !this.isVisibleCart;
-        },
-        filterGoods() {
-            const regexp = new RegExp(this.searchLine, 'i');
-            this.filteredGoods = this.goods.filter((good) => regexp.test(good.product_name));
         },
         async fetchGoods() {
             try {
