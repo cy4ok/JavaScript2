@@ -2,12 +2,41 @@ body {
     margin: 0 auto;
 }
 
-.header {
+header {
+    background-color: #fff;
     display: flex;
-    justify-content: flex-end;
-    padding: 10px 30px 10px 10px;
-    border: 1px solid rgb(208, 209, 211);
+    padding: 10px 20px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #eee;
 }
+
+.cart {
+    margin-left: auto;
+    position: relative;
+}
+
+.cart-container {
+    position: absolute;
+    right: 0;
+    top: 35px;
+    min-width: 400px;
+    min-height: 200px;
+    background-color: #fff;
+    border: 1px solid #f6f6f6;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.container {
+    max-width: 1280px;
+    padding: 0 20px;
+    display: flex;
+    margin: 0 auto;
+}
+
+.header .container {
+    position: relative;
+}
+
 .cart-button {
     width: 100px;
     height: 20px;
