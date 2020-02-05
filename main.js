@@ -18,6 +18,26 @@ function debounce(callback, wait, immediate) {
     }
 }
 
+Vue.component('search', {
+    props: {
+        searchLine: {
+          type: String,
+          default: '',
+        }
+    },
+    template: `
+        <form class="goods-search">
+            <input type="text" class="goods-search-value" @input="filteredGoodsHandler">
+        </form>
+    `,
+    methods: {
+        filteredGoodsHandler(val) {
+            const value = val.target.value;
+            this.$emit('update:searchLine', value);
+    }
+  }
+});
+
 Vue.component('goods-item', {
     props: ['good'],
     template: `
